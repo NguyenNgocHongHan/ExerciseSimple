@@ -7,7 +7,6 @@ const ReverseArray = function (arr) {
     }
     return tempArr;
 };
-
 // console.log(ReverseArray(arr));
 
 
@@ -43,25 +42,18 @@ const FindMaxAvgConsecutiveSeries = function (array) {
     let resultArr = [array.at(0)];
     let maxAvg = avg(resultArr);
 
-    // console.log(`1. maxAvg = ${maxAvg}`);
     let len = array.length;
     array.forEach((item, index) => {
         for (indexInside = index + 1; indexInside <= len; indexInside++) {
             let tempArr = array.slice(index, indexInside);
-            // console.log(`2. tempArr = ${tempArr}`);
 
             let tempAvg = avg(tempArr);
-            // console.log(`3. tempAvg = ${tempAvg}`);
 
             if (tempAvg >= maxAvg && tempArr.length > 1) {
                 resultArr = [...tempArr];
                 maxAvg = tempAvg;
-                // console.log(`4. maxAvg = ${maxAvg}, resultArr = ${resultArr}`);
             }
-            // console.log(`5. maxAvg = ${maxAvg}, resultArr = ${resultArr}`);
-            // console.log();
         }
-        // console.log('--------------------------------------------');
     });
     return `MAX = ${maxAvg}, ARR = ${resultArr}`;
 };
@@ -79,7 +71,8 @@ const users = [
     { id: 'linda', name: "Linda Anderson", age: 32 },
     { id: 'william', name: "William Thomas", age: 21 }
 ];
-
+////////////////////////////////////////////////////////////////////////
+//1
 const calcSumByMap = function (users) {
     let sum = 0;
     users.map((user) => {
@@ -94,6 +87,14 @@ const calcSumByReduce = function (users) {
 };
 // console.log(calcSumByReduce(users));
 
+const calcSumByFilter = function (users) {
+    const ageKey = Object.keys(users[0]).filter(ageUser => ageUser == 'age');
+    const sumUser = user => ageKey.reduce((acc, ageUser) => acc + user[ageUser], 0);
+    const totalSumUsers = users.reduce((acc, user) => acc + sumUser(user), 0);
+    return totalSumUsers;
+};
+// console.log(calcSumByFilter(users));
+
 const calcAvgByMap = function (users) {
     let sum = 0;
     users.map((user) => {
@@ -106,42 +107,103 @@ const calcAvgByMap = function (users) {
 const calcAvgByReduce = function (users) {
     return users.reduce((sum, { age }) => sum + age, 0) / users.length;
 };
-// console.log(calcAvgByReduce(users));
+//console.log(calcAvgByReduce(users));
 
-const FirstHalfUsers = function (users) {
-    let firstUsers = [];
-    users.map((user, index) => {
-        if (index < Math.round(users.length / 2)) firstUsers.push(user);
-    });
-    return firstUsers;
+const calcAvgByFilter = function (users) {
+    const ageKey = Object.keys(users[0]).filter(ageUser => ageUser == 'age');
+    const sumUser = user => ageKey.reduce((acc, ageUser) => acc + user[ageUser], 0);
+    const totalSumUsers = users.reduce((acc, user) => acc + sumUser(user), 0);
+    return totalSumUsers / users.length;
 };
-// console.log(FirstHalfUsers(users));
+// console.log(calcAvgByFilter(users));
 
-const EndHalfUsers = function (users) {
-    let endUsers = [];
-    users.map((user, index) => {
-        if (index >= Math.round(users.length / 2)) endUsers.push(user);
-    });
-    return endUsers;
-};
-// console.log(EndHalfUsers(users));
+const ascArrangement = function (key, users) {
+    let tempArr = [...users];
 
-// tăng dần: asc, giảm dần: desc
-const SortWithTwoParams = function (paramObject, paramSort, users) {
-    switch (paramObject) {
-        case 'id': {
-            return users.sort((u1, u2) => (u1.id > u2.id) ? (paramSort == 'asc' ? 1 : paramSort == 'desc' ? -1 : `Error param sort`) : (u1.id < u2.id) ? (paramSort == 'asc' ? -1 : paramSort == 'desc' ? 1 : `Error param sort`) : 0);
-        }
-        case 'name': {
-            return users.sort((u1, u2) => (u1.name > u2.name) ? (paramSort == 'asc' ? 1 : paramSort == 'desc' ? -1 : `Error param sort`) : (u1.name < u2.name) ? (paramSort == 'asc' ? -1 : paramSort == 'desc' ? 1 : `Error param sort`) : 0);
-        }
-        case 'age': {
-            return users.sort((u1, u2) => (u1.age > u2.age) ? (paramSort == 'asc' ? 1 : paramSort == 'desc' ? -1 : `Error param sort`) : (u1.age < u2.age) ? (paramSort == 'asc' ? -1 : paramSort == 'desc' ? 1 : `Error param sort`) : 0);
-        }
-        default: {
-            return 'You have selected the wrong Object parameter';
+}
+
+////////////////////////////////////////////////////////////////////////
+//2
+const SortWithTwoParams = function (key, typeOfArrangement, users) {
+
+    let tempArr = [...users];
+    if (typeOfArrangement === 'asc') {
+        switch (key) {
+            case 'id': {
+                return tempArr.sort((u1, u2) => (u1.id > u2.id) ? 1 : (u1.id < u2.id) ? -1 : 0);
+            }
+            case 'name': {
+                return tempArr.sort((u1, u2) => (u1.name > u2.name) ? 1 : (u1.name < u2.name) ? -1 : 0);
+            }
+            case 'age': {
+                return tempArr.sort((u1, u2) => (u1.age > u2.age) ? 1 : (u1.age < u2.age) ? -1 : 0);
+            }
+            default: {
+                return 'You have selected the wrong key of Object';
+            }
         }
     }
+    if (typeOfArrangement === 'desc') {
+        switch (key) {
+            case 'id': {
+                return tempArr.sort((u1, u2) => (u1.id > u2.id) ? -1 : (u1.id < u2.id) ? 1 : 0);
+            }
+            case 'name': {
+                return tempArr.sort((u1, u2) => (u1.name > u2.name) ? -1 : (u1.name < u2.name) ? 1 : 0);
+            }
+            case 'age': {
+                return tempArr.sort((u1, u2) => (u1.age > u2.age) ? -1 : (u1.age < u2.age) ? 1 : 0);
+            }
+            default: {
+                return 'You have selected the wrong key of Object';
+            }
+        }
+    }
+    return `You should input 'asc' or 'desc' for typeOfArrangement and input 'id', 'name', or 'age' for key`;
 };
+// console.log(SortWithTwoParams('age', 'desc', users));
 
-console.log(SortWithTwoParams('name', 'desc', users));;
+////////////////////////////////////////////////////////////////////////
+//3
+
+const cutHalfArrayByMap = function (users) {
+    let cutArrayUsers = [[], []];
+    users.map((user, index) => {
+        cutArrayUsers[index < Math.round(users.length) / 2 ? 0 : 1].push(user);
+    });
+    return cutArrayUsers;
+};
+// console.log(cutHalfArrayByMap(users));
+
+const cutHalfArrayByFilter = function (users) {
+    let cutArrayUsers = [users.filter((user, index) => index < Math.round(users.length) / 2), users.filter((user, index) => index >= Math.round(users.length) / 2)];
+    return cutArrayUsers;
+};
+console.log(cutHalfArrayByFilter(users));
+
+const cutHalfArrayByReduce1 = function (users) {
+    return users.reduce((acc, user, index) => {
+        if (index < Math.round(users.length) / 2) {
+            return [[...acc[0], user], acc[1]];
+        }
+        else {
+            return [acc[0], [...acc[1], user]];
+        }
+    }, [[], []]);
+};
+// console.log(cutHalfArrayByReduce1(users));
+
+const cutHalfArrayByReduce2 = function (users) {
+    return users.reduce((acc, user, index) => {
+        acc[index < Math.round(users.length) / 2 ? 0 : 1].push(user);
+        return acc;
+    }, [[], []]);
+};
+// console.log(cutHalfArrayByReduce2(users));
+
+const cutHalfArrayByFor = function (users) {
+    let cutArrayUsers = [[], []];
+    users.forEach((user, index) => cutArrayUsers[index < Math.round(users.length) / 2 ? 0 : 1].push(user));
+    return cutArrayUsers;
+};
+// console.log(cutHalfArrayByFor(users));
